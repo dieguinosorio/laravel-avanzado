@@ -14,9 +14,11 @@
         "fruitcake/laravel-cors": "^1.0",
         "guzzlehttp/guzzle": "^6.3",
         "laravel/framework": "^7.0",
+        "laravel/horizon": "4.3",
         "laravel/sanctum": "^2.14",
         "laravel/tinker": "^2.0",
-        "laravel/ui": "2"
+        "laravel/ui": "2",
+        "predis/predis": "^1.1"
     },
     "require-dev": {
         "facade/ignition": "^2.0",
@@ -28,7 +30,11 @@
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
-        "sort-packages": true
+        "sort-packages": true,
+        "platform": {
+            "ext-pcntl": "8.0",
+            "ext-posix": "8.0"
+        }
     },
     "extra": {
         "laravel": {

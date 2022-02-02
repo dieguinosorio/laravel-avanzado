@@ -44,7 +44,7 @@ class SendUserNotVerifiedMailCommand extends Command
         $builder = User::query();
         if($builder->count()){
             $this->output->progressStart();
-            $builder->whereNull('email_verified_at')->whereRaw('created_at = ?', DB::raw('DATE_ADD(NOW(), INTERVAL 1 WEEK'))
+            $builder->whereNull('email_verified_at')->whereRaw('created_at <= ?', DB::raw('DATE_ADD(NOW(), INTERVAL 1 WEEK'))
             ->each(function(User $user){
                 $user->notify(new UsersVerifiedMailNotification('Recuerda que debes verificar tu cuenta da click al enlace'));
                 $this->output->progressAdvance();

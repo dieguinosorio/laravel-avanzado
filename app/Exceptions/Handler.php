@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
@@ -50,6 +51,13 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
-        return parent::render($request, $exception);
+        if($exception instanceof ScoreException){
+            return response()->json([
+                'message'=>"Debes ingresar un valor entre {$exception->from} y {$exception->to}",
+                'score'=>$exception->score
+            ]);
+        }
+        return response()->json($exception->getMessage());
+        //return parent::render($request, $exception);
     }
 }

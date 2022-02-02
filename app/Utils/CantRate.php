@@ -1,5 +1,9 @@
 <?php
 namespace App\Utils;
+
+use App\Events\ModelRated;
+use App\Exceptions\ScoreException;
+use Exception;
 use Illuminate\Database\Eloquent\Model;
 Trait CantRate {
 
@@ -24,14 +28,18 @@ Trait CantRate {
 
     public function rate(Model $model, float $score) {
 
-        if ($this->hasRated($model))
-            return false;
+        if ($this->hasRated($model)) return false;
 
+        $from = config('rating.from');
+        $to = config('rating.to');
+        if($score < $from || $score > $to){ 
+            throw  new ScoreException($from,$to,$score);
+        }
         $this->ratings($model)->attach($model->getKey(), [
             "score" => $score,
             "rateable_type" => get_class($model)
         ]);
-
+        event(new ModelRated($this,$model,$score));
         return true;
 
     }

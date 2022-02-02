@@ -12,7 +12,8 @@ use App\Utils\CantRate;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens,Notifiable,CantRate;
+    use HasApiTokens,Notifiable,CantRate, CanBeRated;
+
 
     /**
      * The attributes that are mass assignable.

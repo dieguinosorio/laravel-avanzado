@@ -2,6 +2,8 @@
 
 namespace App\Console;
 
+use App\Console\Commands\SendNewsletterCommand;
+use App\Console\Commands\SendUserNotVerifiedMailCommand;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -13,7 +15,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        SendNewsletterCommand::class,
+        SendUserNotVerifiedMailCommand::class
     ];
 
     /**
@@ -24,7 +27,16 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        //evenInMaintenanceMode Sirve para ejecutar la tarea asi este en modo mantenimiento
+        //sendOutputTo indica la carpeta donde se va guardar el log
+        $schedule->command('inspire')->evenInMaintenanceMode()->sendOutputTo(storage_path('inspire.log'))->everyMinute();
+        $schedule->call(function(){
+            echo "Hola";
+        })->everyFiveMinutes();
+        //onOneServer se ejecuta en un solo servidor para que no lleguen varios correos
+        //withoutOverlapping evita que no se ejecute si ya hay una instancia del comando corriendo
+        $schedule->command(SendNewsletterCommand::class)->withoutOverlapping()->onOneServer()->mondays();
+        $schedule->command(SendUserNotVerifiedMailCommand::class)->onOneServer()->daily();
     }
 
     /**

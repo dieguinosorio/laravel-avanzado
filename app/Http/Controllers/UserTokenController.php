@@ -17,15 +17,18 @@ class UserTokenController extends Controller
             'password'=>'required',
             'device_name' => 'required'
         ]);
-
+        
         $user = User::where('email', $request->email)->first();
-
         if (!$user || ($user && !Hash::check($request->password, $user->password))) {
             if(!Hash::check($request->password, $user->password)){
-               throw  ValidationException::withMessages(['password'=> 'La contrasena es incorrecta.']);
+               //throw  ValidationException::withMessages(['password'=> 'La contrasena es incorrecta.']);
+               
+                return ['password'=> 'La contrasena es incorrecta.'];
+               
             }
             else{
-                throw  ValidationException::withMessages(['email' => 'El usuario no se encuentra o es incorrecto ']);
+                //throw  ValidationException::withMessages(['email' => 'El usuario no se encuentra o es incorrecto ']);
+                return ['email' => 'El usuario no se encuentra o es incorrecto '];
             }
         }
         
