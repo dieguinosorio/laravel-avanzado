@@ -3,7 +3,6 @@
 namespace App\Exceptions;
 
 use Exception;
-
 class ScoreException extends Exception
 {
     public $from;
@@ -14,5 +13,15 @@ class ScoreException extends Exception
         $this->from = $from;
         $this->to = $to;
         $this->score = $score;
+    }
+
+    public function render() {
+        return response()->json(
+            trans("rating.scoreException", [
+                "from" => $this->from,
+                "to" => $this->to,
+                "score"=>$this->score
+            ])
+        );
     }
 }

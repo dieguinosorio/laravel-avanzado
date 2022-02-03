@@ -26,3 +26,8 @@ $factory->define(User::class, function (Faker $faker) {
         'remember_token' => Str::random(10),
     ];
 });
+
+//Define caracteristicas especiales de un factory
+$factory->state(User::class,'admin',[
+    'is_admin'=>true,
+]);

@@ -25,6 +25,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('products/{product}/rate', [ProductRatingController::class, 'rate']);
 
     Route::post('products/{product}/unrate', [ProductRatingController::class, 'unrate']);
+
+    Route::post('rating/{rating}/approve',[ProductRatingController::class, 'approve']);
+
+    Route::get('rating',[ProductRatingController::class, 'list']);
 });
 
 Route::post('sanctum/token','UserTokenController');
@@ -44,4 +48,10 @@ Route::group(
     }
 );
 Route::post('newsletter','NewsLetterController@send');
+
+Route::get('/server-error', function(){
+    abort(500,'Error al ejecutar procesar el servidor');
+});
+
+
     

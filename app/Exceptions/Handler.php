@@ -51,13 +51,11 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
-        if($exception instanceof ScoreException){
+        if($request->expectsJson()){
             return response()->json([
-                'message'=>"Debes ingresar un valor entre {$exception->from} y {$exception->to}",
-                'score'=>$exception->score
+                'error'=>$exception->getMessage()
             ]);
         }
-        return response()->json($exception->getMessage());
-        //return parent::render($request, $exception);
+        return parent::render($request, $exception);
     }
 }
